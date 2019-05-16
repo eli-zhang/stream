@@ -1,0 +1,24 @@
+PODS:
+  - Hero (1.4.0)
+  - JTMaterialTransition (2.0.3)
+  - SnapKit (5.0.0)
+
+DEPENDENCIES:
+  - Hero
+  - JTMaterialTransition
+  - SnapKit
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Hero
+    - JTMaterialTransition
+    - SnapKit
+
+SPEC CHECKSUMS:
+  Hero: bac92350d7201a1a940003e0767c7b52ce7c99a1
+  JTMaterialTransition: 7ff22aae6cd969734d775708f08e3656c52cb7bf
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
+
+PODFILE CHECKSUM: 4b1d468ac15842772c8876138ad784443bf355d2
+
+COCOAPODS: 1.6.0
