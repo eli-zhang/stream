@@ -14,28 +14,25 @@ class ParentButton: UIButton {
     var childRadius: Float
     var startAngle: Float
     var endAngle: Float
+    var childrenTag: Int
     var expanded: Bool = false
     
-    public init(frame: CGRect, buttons: [UIButton], childRadius: Float, startAngle: Float, endAngle: Float) {
+    public init(frame: CGRect, buttons: [UIButton], childRadius: Float, startAngle: Float, endAngle: Float, childrenTag: Int) {
         self.childrenButtons = buttons
         self.childRadius = childRadius
         self.startAngle = startAngle
         self.endAngle = endAngle
+        self.childrenTag = childrenTag
         super.init(frame: frame)
         addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
-    convenience init(frame: CGRect, buttons: [UIButton], childRadius: Float) {
-        self.init(frame: frame, buttons: buttons, childRadius: childRadius, startAngle: 0, endAngle: 360)
+    convenience init(frame: CGRect, buttons: [UIButton], childRadius: Float, childrenTag: Int) {
+        self.init(frame: frame, buttons: buttons, childRadius: childRadius, startAngle: 0, endAngle: 360, childrenTag: childrenTag)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.childrenButtons = []
-        self.childRadius = 0
-        self.startAngle = 0
-        self.endAngle = 360
-        super.init(coder: aDecoder)
-        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc func buttonTapped() {
@@ -50,12 +47,12 @@ class ParentButton: UIButton {
     func showChildren() {
         for i in 0..<childrenButtons.count {
             let button = childrenButtons[i]
-            button.tag = 1
+            button.tag = childrenTag
             // The following animation fades the button in and increases size
             self.superview?.addSubview(button)
             button.snp.remakeConstraints { make in
                 make.center.equalTo(self)
-                make.width.height.equalTo(self.childRadius)
+                make.width.height.equalTo(self.childRadius * 2)
             }
         
             button.transform = CGAffineTransform(scaleX: 0, y: 0) // Makes size 0 before animating
@@ -74,8 +71,9 @@ class ParentButton: UIButton {
                     button.alpha = 1},
                 completion: { finished in })
             
-            let angle = self.startAngle + (self.endAngle - self.startAngle) / Float(childrenButtons.count) * Float(i)
-            let distance: Float = self.childRadius * 4 / 3
+            let range = self.endAngle - self.startAngle
+            let angle = self.startAngle + range / (range < 360 ? Float(childrenButtons.count - 1) : Float(childrenButtons.count)) * Float(i)
+            let distance: Float = self.childRadius * 8 / 3
             
             let offsets = components(angle: angle, distance: distance)
             let xOffset = offsets.0
@@ -83,7 +81,7 @@ class ParentButton: UIButton {
             button.snp.remakeConstraints { make in
                 make.centerX.equalTo(self).offset(xOffset)
                 make.centerY.equalTo(self).offset(yOffset)
-                make.width.height.equalTo(self.childRadius)
+                make.width.height.equalTo(self.childRadius * 2)
             }
             UIView.animate(
                 withDuration: 0.8,
@@ -135,11 +133,11 @@ class ParentButton: UIButton {
     }
     
     func removeChildrenFromSuperview() {
-        for subview in self.superview!.subviews {
-            if subview.tag != 0 {
-                subview.removeFromSuperview()
-            }
-        }
+//        for subview in self.superview!.subviews {
+//            if subview.tag == childrenTag {
+//                subview.removeFromSuperview()
+//            }
+//        }
     }
     
     fileprivate func components(angle: Float, distance: Float) -> (Float, Float) {

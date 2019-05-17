@@ -40,6 +40,14 @@ class RadialGradientLayer: CALayer {
     var radius: CGFloat!
     var colors: [CGColor]!
     
+    override init() {
+        super.init()
+    }
+    
+    override init(layer: Any) {
+        super.init(layer: layer)
+    }
+    
     init(radius: CGFloat, colors:[CGColor]){
         self.radius = radius
         self.colors = colors
