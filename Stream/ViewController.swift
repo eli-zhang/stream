@@ -14,8 +14,9 @@ class ViewController: UIViewController {
     var radialGradient: RadialGradientView!
     var button: ParentButton!
     let imageNames = ["Location", "Doorbell"]
-    let subImageNames = ["West", "Oak", "Tea", "College"]
-    let messages = ["where u at", "could someone lemme into kay?", "do you guys want to eat", "want to eat at west?", "want to eat at oken :}", "anyone want to go to collegetown"]
+    let subImageNames = ["West", "Oak"]
+    let collegeTownImageNames = ["Bowl", "Tea", "Cookie"]
+    let messages = ["where u at", "could someone lemme into kay?", "do you guys want to eat", "want to eat at west?", "want to eat at oken :}", "anyone want to go to collegetown", "oishiiii", "want boba", "free cookies at insomnia"]
     
     var textBox: UIView!
     var textView: UITextView!
@@ -44,8 +45,8 @@ class ViewController: UIViewController {
             buttons.append(newButton)
         }
         
-        var subButtons: [UIButton] = []
-        for i in 0..<3 {
+        var foodButtons: [UIButton] = []
+        for i in 0..<2 {
             let newButton = UIButton()
             newButton.backgroundColor = UIColor(red: 0.2, green: 0.6, blue: 0.7, alpha: 1)
             newButton.setImage(UIImage(named: subImageNames[i]), for: .normal)
@@ -58,10 +59,41 @@ class ViewController: UIViewController {
             newButton.addAction(for: .touchUpInside) {
                 self.typeText(self.messages[3 + i])
             }
-            subButtons.append(newButton)
+            foodButtons.append(newButton)
         }
         
-        let foodButton = ParentButton(frame: .zero, buttons: subButtons, childRadius: 30, startAngle: 180, endAngle: 360, childrenTag: 2)
+        var collegeTownButtons: [UIButton] = []
+        for i in 0..<3 {
+            let newButton = UIButton()
+            newButton.backgroundColor = UIColor(red: 0.7, green: 0.4, blue: 0.7, alpha: 1)
+            newButton.setImage(UIImage(named: collegeTownImageNames[i]), for: .normal)
+            newButton.imageView?.tintColor = .white
+            newButton.layer.cornerRadius = 25
+            newButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+            newButton.layer.shadowOffset = CGSize(width: 5, height: 7)
+            newButton.layer.shadowOpacity = 0.8
+            newButton.layer.masksToBounds = false
+            newButton.addAction(for: .touchUpInside) {
+                self.typeText(self.messages[6 + i])
+            }
+            collegeTownButtons.append(newButton)
+        }
+        
+        let collegeTownButton = ParentButton(frame: .zero, buttons: collegeTownButtons, childRadius: 25, startAngle: 270, endAngle: 360, childrenTag: 3)
+        collegeTownButton.layer.cornerRadius = 30
+        collegeTownButton.backgroundColor = UIColor(red: 0.2, green: 0.6, blue: 0.7, alpha: 1)
+        collegeTownButton.setImage(UIImage(named: "College"), for: .normal)
+        collegeTownButton.imageView?.tintColor = .white
+        collegeTownButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        collegeTownButton.layer.shadowOffset = CGSize(width: 5, height: 7)
+        collegeTownButton.layer.shadowOpacity = 0.8
+        collegeTownButton.layer.masksToBounds = false
+        collegeTownButton.addAction(for: .touchUpInside) {
+            self.typeText(self.messages[5])
+        }
+        foodButtons.append(collegeTownButton)
+        
+        let foodButton = ParentButton(frame: .zero, buttons: foodButtons, childRadius: 30, startAngle: 180, endAngle: 360, childrenTag: 2)
         foodButton.layer.cornerRadius = 40
         foodButton.backgroundColor = UIColor(red: 0.98, green: 0.7, blue: 0.8, alpha: 1)
         foodButton.setImage(UIImage(named: "Cake"), for: .normal)
